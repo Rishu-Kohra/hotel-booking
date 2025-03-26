@@ -98,14 +98,16 @@ public class BookingService {
             Inventory inventory = inventoryRepository
                     .findByHotelAndRoomTypeAndDate(hotel, roomType, currentDate)
                     .orElseGet(() -> {
-                        Inventory newInventory = new Inventory();
-                        newInventory.setInventoryId(UUID.randomUUID().toString());
-                        newInventory.setHotel(hotel);
-                        newInventory.setRoomType(roomType);
-                        newInventory.setDate(currentDate);
-                        newInventory.setAvailableRooms(roomType.getTotalRooms());
-                        return newInventory;
+                    	return null;
                     });
+//                        Inventory newInventory = new Inventory();
+//                        newInventory.setInventoryId(UUID.randomUUID().toString());
+//                        newInventory.setHotel(hotel);
+//                        newInventory.setRoomType(roomType);
+//                        newInventory.setDate(currentDate);
+//                        newInventory.setAvailableRooms(roomType.getTotalRooms());
+//                        return newInventory;
+//                    });
 
             if (isCancel) {
                 inventory.setAvailableRooms(inventory.getAvailableRooms() + numberOfRooms);
