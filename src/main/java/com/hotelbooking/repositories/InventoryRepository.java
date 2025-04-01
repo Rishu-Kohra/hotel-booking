@@ -20,4 +20,8 @@ public interface InventoryRepository extends JpaRepository<Inventory, String> {
            "AND i.date BETWEEN :startDate AND :endDate AND i.date != :endDate AND i.availableRooms >= :requiredRooms")
     List<Inventory> findAvailableRooms(Hotel hotel, RoomType roomType, LocalDate startDate, 
                                      LocalDate endDate, Integer requiredRooms);
+    
+    @Query("Select i from Inventory i where i.hotel = :hotel")
+    List<Inventory> findHotelInventory(Hotel hotel);
+    
 } 
