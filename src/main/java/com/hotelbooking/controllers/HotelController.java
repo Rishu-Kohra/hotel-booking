@@ -48,7 +48,7 @@ public class HotelController {
         return ResponseEntity.ok(hotelService.getHotelsByCity(city));
     }
 
-    @GetMapping("/{hotelId}")
+    @GetMapping("/hotel/{hotelId}")
     public ResponseEntity<Hotel> getHotelById(@PathVariable String hotelId) {
         return ResponseEntity.ok(hotelService.getHotelById(hotelId));
     }
