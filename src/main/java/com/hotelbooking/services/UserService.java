@@ -1,23 +1,25 @@
 package com.hotelbooking.services;
-
+ 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
+ 
+import com.hotelbooking.dto.UserRequest;
 import com.hotelbooking.models.Customer;
 import com.hotelbooking.models.Owner;
 import com.hotelbooking.repositories.CustomerRepository;
 import com.hotelbooking.repositories.OwnerRepository;
-
+ 
 @Service
 public class UserService {
 	@Autowired
     private CustomerRepository customerRepository;
-
+ 
     @Autowired
     private OwnerRepository ownerRepository;
-    
     public Customer getCustomerProfile(String customerId) {
-    	Customer customer = customerRepository.findById(customerId).orElse(null);
+    	Customer customer = customerRepository.findById(customerId)
+    			.orElseThrow(() -> new RuntimeException("Customer not found"));
     	Customer newCustomer = new Customer();
     	newCustomer.setCustomerId(customer.getCustomerId());
     	newCustomer.setCustomerName(customer.getCustomerName());
@@ -25,14 +27,38 @@ public class UserService {
     	newCustomer.setCustomerContact(customer.getCustomerContact());
 		return newCustomer;
     }
-    
     public Owner getOwnerProfile(String ownerId) {
-    	Owner owner = ownerRepository.findById(ownerId).orElse(null);
+    	Owner owner = ownerRepository.findById(ownerId)
+    			.orElseThrow(() -> new RuntimeException("Owner not found"));
     	Owner newOwner = new Owner();
     	newOwner.setOwnerId(owner.getOwnerId());
     	newOwner.setOwnerName(owner.getOwnerName());
     	newOwner.setOwnerEmailId(owner.getOwnerEmailId());
     	newOwner.setOwnerContact(owner.getOwnerContact());
 		return newOwner;
+    }
+    @Transactional
+    public Customer updateCustomerProfile(String customerId, UserRequest request) {
+    	Customer existingCustomer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+ 
+    	updateCustomerFromRequest(existingCustomer, request);
+    	return customerRepository.save(existingCustomer);
+    }
+    private void updateCustomerFromRequest(Customer existingCustomer, UserRequest request) {
+    	existingCustomer.setCustomerName(request.getName());
+    	existingCustomer.setCustomerContact(request.getContact());
+    }
+    @Transactional
+    public Owner updateOwnerProfile(String ownerId, UserRequest request) {
+    	Owner existingOwner = ownerRepository.findById(ownerId)
+                .orElseThrow(() -> new RuntimeException("Owner not found"));
+ 
+    	updateOwnerFromRequest(existingOwner, request);
+    	return ownerRepository.save(existingOwner);
+    }
+    private void updateOwnerFromRequest(Owner existingOwner, UserRequest request) {
+    	existingOwner.setOwnerName(request.getName());
+    	existingOwner.setOwnerContact(request.getContact());
     }
 }
