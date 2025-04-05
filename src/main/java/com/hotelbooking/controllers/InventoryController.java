@@ -28,7 +28,8 @@ public class InventoryController {
 	
 	@PostMapping("/intialize/{roomTypeId}")
     @PreAuthorize("hasRole('OWNER')")
-    public void initializeInventory(@PathVariable String roomTypeId) {
-        inventoryService.initializeInventory(roomTypeId);
+    public List<Inventory> initializeInventory(@PathVariable String roomTypeId) {
+		return inventoryService.initializeInventory(roomTypeId);
     }
+	
 }

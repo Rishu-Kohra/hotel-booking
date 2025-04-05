@@ -47,7 +47,7 @@ public class InventoryService {
     }
 	
 	@Transactional
-	public void initializeInventory(String roomTypeId){
+	public List<Inventory> initializeInventory(String roomTypeId){
 		RoomType roomType = roomTypeRepository.findById(roomTypeId)
                 .orElseThrow(() -> new RuntimeException("Room type not found"));
 		LocalDate startDate;
@@ -61,7 +61,8 @@ public class InventoryService {
 					.orElse(LocalDate.now());
 			startDate = lastDate.plusDays(1);
 		}
-		LocalDate endDate = startDate.plusMonths(3);
+		LocalDate endDate = startDate.plusMonths(1);
+		List<Inventory> roomTypeInventory = new ArrayList<>();
 		for(LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
 			Inventory inventory = new Inventory();
 			inventory.setInventoryId(UUID.randomUUID().toString());
@@ -70,7 +71,8 @@ public class InventoryService {
 			inventory.setHotel(roomType.getHotel());
 			inventory.setDate(date);
 			inventoryRepository.save(inventory);
+			roomTypeInventory.add(inventory);
 		}
- 
+		return roomTypeInventory;
 	}
 }
