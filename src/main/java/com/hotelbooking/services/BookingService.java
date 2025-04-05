@@ -146,4 +146,14 @@ public class BookingService {
 
         bookingRepository.delete(booking);
     }
+    
+    	 
+	@Transactional
+	public void deleteBookingByCustomer(String customerId) {
+		List<Booking> bookings = getCustomerBookings(customerId);
+		for (Booking booking : bookings) {
+			String bookingId = booking.getBookingId();
+			cancelBooking(bookingId);
+		}
+	}
 } 

@@ -61,4 +61,12 @@ public class UserService {
     	existingOwner.setOwnerName(request.getName());
     	existingOwner.setOwnerContact(request.getContact());
     }
+    
+    @Transactional
+    public void deleteCustomer(String customerId) {
+        if (!customerRepository.existsById(customerId)) {
+            throw new RuntimeException("Customer not found");
+        }
+        customerRepository.deleteById(customerId);
+    }
 }
