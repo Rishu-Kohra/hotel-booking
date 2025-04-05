@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.hotelbooking.models.Inventory;
@@ -23,5 +24,11 @@ public class InventoryController {
     @PreAuthorize("hasRole('OWNER')")
     public List<List<Inventory>> getHotelInventory(@PathVariable String ownerId) {
         return inventoryService.getInventoryByOwner(ownerId);
+    }
+	
+	@PostMapping("/intialize/{roomTypeId}")
+    @PreAuthorize("hasRole('OWNER')")
+    public void initializeInventory(@PathVariable String roomTypeId) {
+        inventoryService.initializeInventory(roomTypeId);
     }
 }

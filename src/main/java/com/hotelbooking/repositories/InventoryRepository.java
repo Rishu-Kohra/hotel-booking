@@ -23,5 +23,5 @@ public interface InventoryRepository extends JpaRepository<Inventory, String> {
     
     @Query("Select i from Inventory i where i.hotel = :hotel")
     List<Inventory> findHotelInventory(Hotel hotel);
-    
+    List<Inventory> findByRoomTypeRoomTypeId(String roomTypeId);
 } 
