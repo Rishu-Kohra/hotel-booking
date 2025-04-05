@@ -6,13 +6,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
- 
+
+import com.hotelbooking.dto.FeedbackRequest;
 import com.hotelbooking.dto.UserRequest;
 import com.hotelbooking.models.Customer;
+import com.hotelbooking.models.Feedback;
 import com.hotelbooking.models.Owner;
 import com.hotelbooking.services.BookingService;
 import com.hotelbooking.services.UserService;
@@ -57,4 +60,10 @@ public class UserController {
 		userService.deleteCustomer(customerId);
         return ResponseEntity.ok().build();
     }
+	
+	@PostMapping("/customer/feedback/{customerId}")
+    @PreAuthorize("hasRole('CUSTOMER')")
+	public void feedBackCustomer(@PathVariable String customerId, @RequestBody FeedbackRequest feedbackRequest) {
+		userService.feedbackCustomer(customerId, feedbackRequest);
+    } 
 }
