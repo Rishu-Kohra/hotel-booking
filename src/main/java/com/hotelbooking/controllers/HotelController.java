@@ -52,6 +52,11 @@ public class HotelController {
     public ResponseEntity<Hotel> getHotelById(@PathVariable String hotelId) {
         return ResponseEntity.ok(hotelService.getHotelById(hotelId));
     }
+    
+    @GetMapping("/getCity")
+    public ResponseEntity<List<String>> getCities() {
+        return ResponseEntity.ok(hotelService.getCities());
+    }
 
     @DeleteMapping("/{hotelId}")
     @PreAuthorize("hasRole('OWNER')")

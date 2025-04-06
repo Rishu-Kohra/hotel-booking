@@ -78,6 +78,10 @@ public class HotelService {
         return hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new RuntimeException("Hotel not found"));
     }
+    
+    public List<String> getCities(){
+    	return hotelRepository.getCities();
+    }
 
     @Transactional
     public void deleteHotel(String hotelId) {

@@ -21,4 +21,6 @@ public interface HotelRepository extends JpaRepository<Hotel, String> {
            "LOWER(h.country) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
            "LOWER(h.hotelName) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
     List<Hotel> searchHotels(String searchTerm);
+    @Query("SELECT DISTINCT h.city FROM Hotel h")
+    List<String> getCities();
 } 
