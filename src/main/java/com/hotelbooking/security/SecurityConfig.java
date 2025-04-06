@@ -35,8 +35,9 @@ public class SecurityConfig {
 				.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(auth -> auth
 
 						.requestMatchers("/api/auth/**", "/api/hotels/search/**", "/api/hotels/hotel/**",
-								"/api/roomTypes/hotel/**", "/api/inventory/available-hotels/**", "/api/hotels/getCity")
-						.permitAll().requestMatchers("/api/owners/**").hasRole("OWNER")
+								"/api/roomTypes/hotel/**", "/api/inventory/available-hotels/**", "/api/hotels/getCity","/api/user/customer/getFeedback")
+						.permitAll()
+						.requestMatchers("/api/owners/**").hasRole("OWNER")
 						.requestMatchers("/api/customers/**").hasRole("CUSTOMER").anyRequest().authenticated())
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

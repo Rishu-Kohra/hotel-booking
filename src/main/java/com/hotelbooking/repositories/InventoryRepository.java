@@ -29,4 +29,6 @@ public interface InventoryRepository extends JpaRepository<Inventory, String> {
             "AND i.date BETWEEN :checkInDate AND :checkOutDate AND i.date != :checkOutDate AND i.availableRooms >= 0")
      List<Hotel> findAvailableRoomsByCityAndDate(String city, LocalDate checkInDate, 
                                       LocalDate checkOutDate);
+    
+    void deleteByRoomTypeRoomTypeId(String roomTypeId);
 } 

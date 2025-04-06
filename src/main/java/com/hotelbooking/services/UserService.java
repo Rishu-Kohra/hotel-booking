@@ -102,4 +102,12 @@ public class UserService {
 		}
 		return newFeedbacks;
 	}
+    
+    @Transactional
+    public void deleteOwner(String ownerId) {
+        if (!ownerRepository.existsById(ownerId)) {
+            throw new RuntimeException("Owner not found");
+        }
+        ownerRepository.deleteById(ownerId);
+    }
 }

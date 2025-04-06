@@ -16,10 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hotelbooking.dto.FeedbackRequest;
 import com.hotelbooking.dto.UserRequest;
+import com.hotelbooking.models.Booking;
 import com.hotelbooking.models.Customer;
 import com.hotelbooking.models.Feedback;
+import com.hotelbooking.models.Hotel;
 import com.hotelbooking.models.Owner;
+import com.hotelbooking.models.RoomType;
 import com.hotelbooking.services.BookingService;
+import com.hotelbooking.services.HotelService;
+import com.hotelbooking.services.InventoryService;
+import com.hotelbooking.services.RoomTypeService;
 import com.hotelbooking.services.UserService;
  
 @RestController
@@ -30,6 +36,16 @@ public class UserController {
 	
 	@Autowired
 	private BookingService bookingService;
+	
+	@Autowired
+    private InventoryService inventoryService;
+	
+	@Autowired
+    private HotelService hotelService;
+	
+	 @Autowired
+	 private RoomTypeService roomTypeService;
+	    
 	
 	@GetMapping("/customer/{customerId}")
     @PreAuthorize("hasRole('CUSTOMER')")
@@ -60,6 +76,29 @@ public class UserController {
     public ResponseEntity<Void> deleteCustomer(@PathVariable String customerId) {
 		bookingService.deleteBookingByCustomer(customerId);
 		userService.deleteCustomer(customerId);
+        return ResponseEntity.ok().build();
+    }
+	
+	@DeleteMapping("/owner/{ownerId}")
+    @PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<Void> deleteOwner(@PathVariable String ownerId) {
+		inventoryService.deleteInventoryByOwner(ownerId);
+		List<Hotel> hotels = hotelService.getHotelsByOwner(ownerId);
+		for (Hotel hotel : hotels) {
+			String hotelId = hotel.getHotelId();
+			List<Booking> bookings = bookingService.getHotelBookings(hotelId);
+			for(Booking booking : bookings) {
+				String bookingId = booking.getBookingId();
+				bookingService.cancelBooking(bookingId);
+			}
+			List<RoomType> roomTypes = roomTypeService.getRoomTypesByHotel(hotelId);
+			for(RoomType roomType : roomTypes) {
+				String roomTypeId = roomType.getRoomTypeId();
+				roomTypeService.deleteRoomType(roomTypeId);
+			}
+			hotelService.deleteHotel(hotelId);
+		}
+		userService.deleteOwner(ownerId);
         return ResponseEntity.ok().build();
     }
 	

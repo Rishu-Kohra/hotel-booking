@@ -79,4 +79,20 @@ public class InventoryService {
 	public List<Hotel> getAvailableRoomsByCityAndDate(String city, LocalDate checkInDate, LocalDate checkOutDate) {
 		return inventoryRepository.findAvailableRoomsByCityAndDate(city, checkInDate, checkOutDate);
 	}
+	
+	@Transactional
+	public void deleteInventoryByOwner(String ownerId) {
+		List<List<Inventory>> hotelInventory = getInventoryByOwner(ownerId);
+		for (List<Inventory> inventoryList : hotelInventory) {
+			for (Inventory inventory : inventoryList) {
+				inventoryRepository.delete(inventory);
+			}
+		}
+
+	}
+
+	@Transactional
+	public void deleteInventoryByRoomType(String roomTypeId) {
+		inventoryRepository.deleteByRoomTypeRoomTypeId(roomTypeId);
+	}
 }

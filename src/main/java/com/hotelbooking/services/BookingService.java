@@ -156,4 +156,10 @@ public class BookingService {
 			cancelBooking(bookingId);
 		}
 	}
+	
+	public List<Booking> getRoomTypeBookings(String roomTypeId) {
+    	RoomType roomType = roomTypeRepository.findById(roomTypeId)
+                .orElseThrow(() -> new RuntimeException("RoomType not found"));
+        return bookingRepository.findByRoomType(roomType);
+    }
 } 

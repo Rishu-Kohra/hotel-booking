@@ -1,7 +1,10 @@
 package com.hotelbooking.controllers;
 
 import com.hotelbooking.dto.RoomTypeRequest;
+import com.hotelbooking.models.Booking;
 import com.hotelbooking.models.RoomType;
+import com.hotelbooking.services.BookingService;
+import com.hotelbooking.services.InventoryService;
 import com.hotelbooking.services.RoomTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,12 @@ public class RoomTypeController {
 
     @Autowired
     private RoomTypeService roomTypeService;
+    
+    @Autowired
+    private BookingService bookingService;
+    
+    @Autowired
+    private InventoryService inventoryService;
 
     @PostMapping
     @PreAuthorize("hasRole('OWNER')")
@@ -50,6 +59,12 @@ public class RoomTypeController {
     @DeleteMapping("/{roomTypeId}")
     @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<Void> deleteRoomType(@PathVariable String roomTypeId) {
+    	List<Booking> bookings = bookingService.getRoomTypeBookings(roomTypeId);
+		for(Booking booking : bookings) {
+			String bookingId = booking.getBookingId();
+			bookingService.cancelBooking(bookingId);
+		}
+		inventoryService.deleteInventoryByRoomType(roomTypeId);
         roomTypeService.deleteRoomType(roomTypeId);
         return ResponseEntity.ok().build();
     }
