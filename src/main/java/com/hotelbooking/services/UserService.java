@@ -1,5 +1,7 @@
 package com.hotelbooking.services;
  
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,4 +90,16 @@ public class UserService {
     	feedback.setDescription(feedbackRequest.getDescription());
     	feedbackRepository.save(feedback);
     }
+    
+    public List<Feedback> getfeedBack() {
+		List<Feedback> feedbacks = feedbackRepository.findAll();
+		List<Feedback> newFeedbacks = new ArrayList<>();
+		for(Feedback feedback : feedbacks) {
+			Feedback newFeedback = new Feedback();
+			newFeedback.setCustomerName(feedback.getCustomerName());
+			newFeedback.setDescription(feedback.getDescription());
+			newFeedbacks.add(newFeedback);
+		}
+		return newFeedbacks;
+	}
 }

@@ -1,5 +1,7 @@
 package com.hotelbooking.controllers;
  
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,6 +61,11 @@ public class UserController {
 		bookingService.deleteBookingByCustomer(customerId);
 		userService.deleteCustomer(customerId);
         return ResponseEntity.ok().build();
+    }
+	
+	@GetMapping("/customer/getFeedback")
+	public ResponseEntity<List<Feedback>> getfeedBack() {
+		return ResponseEntity.ok(userService.getfeedBack());
     }
 	
 	@PostMapping("/customer/feedback/{customerId}")
