@@ -24,4 +24,9 @@ public interface InventoryRepository extends JpaRepository<Inventory, String> {
     @Query("Select i from Inventory i where i.hotel = :hotel")
     List<Inventory> findHotelInventory(Hotel hotel);
     List<Inventory> findByRoomTypeRoomTypeId(String roomTypeId);
+    
+    @Query("SELECT DISTINCT i.hotel FROM Inventory i WHERE i.hotel.city = :city " +
+            "AND i.date BETWEEN :checkInDate AND :checkOutDate AND i.date != :checkOutDate AND i.availableRooms >= 0")
+     List<Hotel> findAvailableRoomsByCityAndDate(String city, LocalDate checkInDate, 
+                                      LocalDate checkOutDate);
 } 

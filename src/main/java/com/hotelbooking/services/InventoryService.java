@@ -75,4 +75,8 @@ public class InventoryService {
 		}
 		return roomTypeInventory;
 	}
+	
+	public List<Hotel> getAvailableRoomsByCityAndDate(String city, LocalDate checkInDate, LocalDate checkOutDate) {
+		return inventoryRepository.findAvailableRoomsByCityAndDate(city, checkInDate, checkOutDate);
+	}
 }
