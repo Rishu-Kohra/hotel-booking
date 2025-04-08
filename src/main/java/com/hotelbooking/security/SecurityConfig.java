@@ -35,7 +35,7 @@ public class SecurityConfig {
 				.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(auth -> auth
 
 						.requestMatchers("/api/auth/**", "/api/hotels/search/**", "/api/hotels/hotel/**",
-								"/api/roomTypes/hotel/**", "/api/inventory/available-hotels/**", "/api/hotels/getCity","/api/user/customer/getFeedback")
+								"/api/roomTypes/hotel/**", "/api/inventory/available-hotels/**", "/api/hotels/getCity","/api/user/customer/getFeedback","/api/image/hotel/getImage/**")
 						.permitAll()
 						.requestMatchers("/api/owners/**").hasRole("OWNER")
 						.requestMatchers("/api/customers/**").hasRole("CUSTOMER").anyRequest().authenticated())
