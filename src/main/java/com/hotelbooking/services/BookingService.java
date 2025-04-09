@@ -90,7 +90,7 @@ public class BookingService {
     }
 
     @Transactional
-    private void updateInventory(Hotel hotel, RoomType roomType, LocalDate checkIn, 
+	public void updateInventory(Hotel hotel, RoomType roomType, LocalDate checkIn, 
                                LocalDate checkout, Integer numberOfRooms, boolean isCancel) {
         long days = ChronoUnit.DAYS.between(checkIn, checkout); //days =2
         for (int i = 0; i < days; i++) {
